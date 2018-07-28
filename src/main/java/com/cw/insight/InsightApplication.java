@@ -6,13 +6,9 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 public class InsightApplication {
-    @RequestMapping("/")
-    public String index(){
-        return "Hello Spring Boot";
-    }
+
     public static void main(String[] args) {
         SpringApplication.run(InsightApplication.class, args);
     }
