@@ -336,6 +336,6 @@ public class Apps {
             //e.printStackTrace();
             openid = "";
         }
-        return "openid=" + openid;
+        return "{openid:"+openid+"}";
     }
 }
