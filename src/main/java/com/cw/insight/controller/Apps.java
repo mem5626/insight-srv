@@ -329,11 +329,13 @@ public class Apps {
         String openid = "";
         try {
             JSONObject jsonObject = (JSONObject) JSONValue.parseStrict(jsonStr);
-            openid = jsonObject.get("openid").toString();
+            if(jsonObject != null){
+                openid = jsonObject.get("openid") == null? "":jsonObject.get("openid").toString();
+            }
         } catch (ParseException e) {
             //e.printStackTrace();
             openid = "";
         }
-        return openid;
+        return "openid=" + openid;
     }
 }
