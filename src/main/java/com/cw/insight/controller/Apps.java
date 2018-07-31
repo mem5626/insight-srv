@@ -1,7 +1,13 @@
 package com.cw.insight.controller;
 
+import com.cw.insight.utils.HttpTools;
+import net.minidev.json.JSONObject;
+import net.minidev.json.JSONValue;
+import net.minidev.json.parser.ParseException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class Apps {
@@ -309,5 +315,25 @@ public class Apps {
                 "        \"bio\": \"这是一款专为佛系青年打造的养生App。\"\n" +
                 "    }\n" +
                 "}";
+    }
+
+    @RequestMapping("/loginstate")
+    public String getLoginState(HttpServletRequest request){
+        String appid = "wx1044da5d38d4d77d";
+        String secret = "69c5ee2b5b8bb56aba2aff32e8935bfe";
+        String js_code = request.getParameter("code");
+        String url = "https://api.weixin.qq.com/sns/jscode2session?appid="
+                +appid+"&secret="+secret+"&js_code="+js_code+"&grant_type=authorization_code";
+        String jsonStr = HttpTools.httpRequest(url,"POST",null);
+
+        String openid = "";
+        try {
+            JSONObject jsonObject = (JSONObject) JSONValue.parseStrict(jsonStr);
+            openid = jsonObject.get("openid").toString();
+        } catch (ParseException e) {
+            //e.printStackTrace();
+            openid = "";
+        }
+        return openid;
     }
 }
