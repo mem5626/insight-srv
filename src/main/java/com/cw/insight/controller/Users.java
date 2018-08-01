@@ -47,8 +47,13 @@ public class Users {
     @RequestMapping(path="/users/{openid}")
     public String patchUserFormId(@PathVariable String openid, HttpServletRequest request){
         String formid = request.getParameter("formid");
-        DbTools.doSQL("insert into insight_user(openid,formid,new_time,is_used) values('"+openid+"','"+formid+"',date_format(now(),'%Y-%m-%d %H:%i:%S'),0)");
-        return "{\n" +"    \"msg\": \"发送成功！\"\n" + "}";
+        int count = DbTools.doUpdate("insert into insight_medium(openid,formid,new_time,is_used) values('"+openid+"','"+formid+"',date_format(now(),'%Y-%m-%d %H:%i:%S'),0)");
+        if(count == 1){
+            return "{\n" +"    \"msg\": \"发送成功！\"\n" + "}";
+        }else{
+            return "{\n" +"    \"msg\": \"发送失败！\"\n" + "}";
+        }
+
     }
 
     @RequestMapping("/users/ID/diagrams/ID")

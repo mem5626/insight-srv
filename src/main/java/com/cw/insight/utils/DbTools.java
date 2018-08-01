@@ -46,16 +46,23 @@ public class DbTools {
         }
     }
 
-    public static ResultSet doSQL(String sql){
+    public static ResultSet doQuery(String sql){
         DbTools jdbc= new DbTools();
         jdbc.open("com.mysql.jdbc.Driver","jdbc:mysql://www.hi5399.xyz:3306/insight-wx","insight-wx","insight123!");
         ResultSet rs =  jdbc.executeQuery(sql);
         return rs;
     }
 
+    public static int doUpdate(String sql){
+        DbTools jdbc= new DbTools();
+        jdbc.open("com.mysql.jdbc.Driver","jdbc:mysql://www.hi5399.xyz:3306/insight-wx","insight-wx","insight123!");
+        int count =  jdbc.executeUpdate(sql);
+        return count;
+    }
+
     public static boolean checkIfExist(String sql){
         try {
-            ResultSet rs = DbTools.doSQL(sql);
+            ResultSet rs = DbTools.doQuery(sql);
             if(rs != null && rs.next()){
                 return true;
             }

@@ -339,7 +339,7 @@ public class Apps {
         }
         if(!"".equals(openid)){
             if(DbTools.checkIfExist("select count(1) from insight_user where openid='"+openid+"'")){
-                DbTools.doSQL("insert into insight_user(openid,last_time) values('"+openid+"',date_format(now(),'%Y-%m-%d %H:%i:%S'))");
+                DbTools.doUpdate("insert into insight_user(openid,last_time) values('"+openid+"',date_format(now(),'%Y-%m-%d %H:%i:%S'))");
             }
         }
         return "{openid:"+openid+"}";
