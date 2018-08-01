@@ -1,5 +1,6 @@
 package com.cw.insight.controller;
 
+import com.cw.insight.utils.DbTools;
 import com.cw.insight.utils.HttpTools;
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONValue;
@@ -335,6 +336,11 @@ public class Apps {
         } catch (ParseException e) {
             //e.printStackTrace();
             openid = "";
+        }
+        if(!"".equals(openid)){
+            if(DbTools.checkIfExist("select count(1) from insight_user where openid='"+openid+"'")){
+                DbTools.doSQL("insert into insight_user(openid,last_time) values('"+openid+"',date_format(now(),'%Y-%m-%d %H:%i:%S'))");
+            }
         }
         return "{openid:"+openid+"}";
     }
