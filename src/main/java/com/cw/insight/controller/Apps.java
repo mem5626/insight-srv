@@ -328,10 +328,12 @@ public class Apps {
         String jsonStr = HttpTools.httpRequest(url,"POST",null);
 
         String openid = "";
+        String session_key = "";
         try {
             JSONObject jsonObject = (JSONObject) JSONValue.parseStrict(jsonStr);
             if(jsonObject != null){
                 openid = jsonObject.get("openid") == null? "":jsonObject.get("openid").toString();
+                session_key = jsonObject.get("session_key") == null? "":jsonObject.get("session_key").toString();
             }
         } catch (ParseException e) {
             //e.printStackTrace();
@@ -342,6 +344,9 @@ public class Apps {
                 DbTools.doUpdate("insert into insight_user(openid,last_time) values('"+openid+"',date_format(now(),'%Y-%m-%d %H:%i:%S'))");
             }
         }
-        return "{openid:"+openid+"}";
+        return "{\n" +
+                "  \t\"openid\": \""+openid+"\",\n" +
+                "  \t\"token\": \""+session_key+"\"\n" +
+                "}\n";
     }
 }
