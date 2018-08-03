@@ -1,28 +1,33 @@
 package com.cw.insight.utils;
 
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
+
 import java.sql.*;
 import java.util.List;
 
 public class DbTools {
-    private Connection conn=null;
-    private Statement statement=null;
+    private Connection conn = null;
+    private Statement statement = null;
+    private static String DRIVER = "com.mysql.jdbc.Driver";
+    private static String JDBCURL = "jdbc:mysql://www.hi5399.xyz:3306/insight-wx";
+    private static String USERNAME = "insight-wx";
+    private static String PASSWORD = "insight123!";
 
-    public void open(String driver,String jdbcUrl,String userName,String userPwd) {
+    public void openConn() {
         try {
-            Class.forName(driver).newInstance();
-            conn = DriverManager.getConnection(jdbcUrl,userName,userPwd);
+            Class.forName(DRIVER).newInstance();
+            conn = DriverManager.getConnection(JDBCURL, USERNAME, PASSWORD);
             statement = conn.createStatement();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public int executeUpdate(String sql) {
         try {
+            openConn();
             return statement.executeUpdate(sql);
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return -1;
         }
@@ -30,6 +35,7 @@ public class DbTools {
 
     public ResultSet executeQuery(String sql) {
         try {
+            openConn();
             return statement.executeQuery(sql);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,50 +52,43 @@ public class DbTools {
         }
     }
 
-    public static ResultSet doQuery(String sql){
-        DbTools jdbc= new DbTools();
-        jdbc.open("com.mysql.jdbc.Driver","jdbc:mysql://www.hi5399.xyz:3306/insight-wx","insight-wx","insight123!");
-        ResultSet rs =  jdbc.executeQuery(sql);
+    public static ResultSet doQuery(String sql) {
+        DbTools tool = new DbTools();
+        tool.openConn();
+        ResultSet rs = tool.executeQuery(sql);
         return rs;
     }
 
-    public static int doUpdate(String sql){
-        DbTools jdbc= new DbTools();
-        jdbc.open("com.mysql.jdbc.Driver","jdbc:mysql://www.hi5399.xyz:3306/insight-wx","insight-wx","insight123!");
-        int count =  jdbc.executeUpdate(sql);
+    public static int doUpdate(String sql) {
+        DbTools tool = new DbTools();
+        tool.openConn();
+        int count = tool.executeUpdate(sql);
         return count;
     }
 
-    public static boolean checkIfExist(String sql){
+    public static boolean checkIfExist(String sql) {
         try {
             ResultSet rs = DbTools.doQuery(sql);
-            if(rs != null && rs.next()){
+            if (rs != null && rs.next()) {
                 return true;
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    public static void main(String args[])
-    {
-        try {
-            DbTools jdbc= new DbTools();
-            jdbc.open("com.mysql.jdbc.Driver","jdbc:mysql://www.hi5399.xyz:3306/insight-wx","insight-wx","insight123!");
-            ResultSet rs =  jdbc.executeQuery("select * from insight_user");
-
-            while(rs.next()){
-                String email = rs.getString("openid") ;
-                System.out.println(email);
-
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-
-    }
+//    public static void main(String args[]) {
+//        try {
+//            DbTools jdbc = new DbTools();
+//            jdbc.openConn();
+//            ResultSet rs = jdbc.executeQuery("select * from insight_user");
+//            while (rs.next()) {
+//                String openid = rs.getString("openid");
+//                System.out.println(openid);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 }
