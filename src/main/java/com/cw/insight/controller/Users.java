@@ -16,22 +16,47 @@ public class Users {
     @RequestMapping(path = "/users/{openid}/diagrams")
     public String getUserDiagrams(@PathVariable String openid) {
         String diagrams = "{}";
-        try{
-            ResultSet rs = DbTools.doQuery("select * from test_chart");
+        try {
+            ResultSet rs = DbTools.doQuery("select chartid,(select t.title from test_chart t where t.chartid=c.chartid) as title from insight_collection c where openid='"+openid+"'");
             String chartid = "";
             String title = "";
             diagrams = "{\"records\":[";
-            while(rs.next()){
-                chartid =  rs.getString("chartid");
-                title =  rs.getString("title");
-                diagrams += "{\"name\":\""+chartid+"\",\"id\":\""+title+"\"},";
+            while (rs.next()) {
+                chartid = rs.getString("chartid");
+                title = rs.getString("title");
+                diagrams += "{\"name\":\"" + chartid + "\",\"id\":\"" + title + "\"},";
             }
             diagrams += "]}";
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             diagrams = "{}";
         }
         return diagrams;
+    }
+
+    /*
+    修改指定用户的图表收藏状态。
+     */
+    @RequestMapping("/users/{openid}/diagrams/{chartid}")
+    public String toggleUserDiagram(@PathVariable String openid, @PathVariable String chartid, HttpServletRequest request) {
+        try {
+            ResultSet rs = DbTools.doQuery("select * from insight_collection where openid='" + openid + "' and chartid='" + chartid + "'");
+            if (rs != null && rs.next()) {
+                //删除
+                DbTools.doUpdate("delete from insight_collection where openid='" + openid + "' and chartid='" + chartid + "'");
+            } else {
+                //新增
+                DbTools.doUpdate("insert into insight_collection(openid,chartid) values('" + openid + "','" + chartid + "')");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //只需要返回成功或失败？
+        return "{\n" +
+                "    \"diagramId\": \"mock id\",\n" +
+                "    \"userId\": \"mock id\",\n" +
+                "    \"ifCollected\": true\n" +
+                "}";
     }
 
     /*
@@ -40,34 +65,14 @@ public class Users {
     @RequestMapping(path = "/users/{openid}")
     public String patchUserFormId(@PathVariable String openid, HttpServletRequest request) {
         String formid = request.getParameter("formid");
+        if ("the formId is a mock one".equals(formid)) {
+            return "{\n" + "    \"msg\": \"发送成功！\"\n" + "}";
+        }
         int count = DbTools.doUpdate("insert into insight_medium(openid,formid,new_time,is_used) values('" + openid + "','" + formid + "',date_format(now(),'%Y-%m-%d %H:%i:%S'),0)");
         if (count == 1) {
             return "{\n" + "    \"msg\": \"发送成功！\"\n" + "}";
         } else {
             return "{\n" + "    \"msg\": \"发送失败！\"\n" + "}";
         }
-    }
-
-    /*
-    修改指定用户的图表收藏状态。
-     */
-    @RequestMapping("/users/{openid}/diagrams/{chartid}")
-    public String toggleUserDiagram(@PathVariable String openid, @PathVariable String chartid, HttpServletRequest request) {
-        try{
-            ResultSet rs = DbTools.doQuery("select * from insight_collection where openid='" + openid + "' and chartid='" + chartid + "'");
-            if(rs != null && rs.next()){
-                //做删除操作？
-            }else{
-                //做新增操作？
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        return "{\n" +
-                "    \"diagramId\": \"mock id\",\n" +
-                "    \"userId\": \"mock id\",\n" +
-                "    \"ifCollected\": true\n" +
-                "}";
     }
 }

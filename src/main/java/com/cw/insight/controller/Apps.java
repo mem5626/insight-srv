@@ -62,7 +62,7 @@ public class Apps {
     @RequestMapping("/apps/ID/quotas")
     public String getAppQuotas(){
         return "{\n" +
-                "    \"性能\":[\n" +
+                "    \"property\":[\n" +
                 "        {\n" +
                 "            \"name\":\"应用服务器CPU使用率\",\n" +
                 "            \"items\":[\n" +
@@ -169,7 +169,7 @@ public class Apps {
                 "            ]\n" +
                 "        }\n" +
                 "    ],\n" +
-                "    \"资源\":[\n" +
+                "    \"performance\":[\n" +
                 "        {\n" +
                 "            \"name\":\"应用服务器磁盘使用率\",\n" +
                 "            \"items\":[\n" +
@@ -246,7 +246,7 @@ public class Apps {
                 "            ]\n" +
                 "        }\n" +
                 "    ],\n" +
-                "    \"批量\":[\n" +
+                "    \"batch\":[\n" +
                 "        {\n" +
                 "            \"name\":\"批量开始时间\",\n" +
                 "            \"items\":[\n" +
@@ -368,7 +368,7 @@ public class Apps {
                 "            ]\n" +
                 "        }\n" +
                 "    ],\n" +
-                "    \"联机\":[\n" +
+                "    \"online\":[\n" +
                 "        {\n" +
                 "            \"name\":\"技术类错误\",\n" +
                 "            \"items\":[\n" +
@@ -505,7 +505,7 @@ public class Apps {
                 "            ]\n" +
                 "        }\n" +
                 "    ],\n" +
-                "    \"业务\":[\n" +
+                "    \"service\":[\n" +
                 "        {\n" +
                 "            \"name\":\"业务量（笔）\",\n" +
                 "            \"items\":[\n" +
@@ -832,7 +832,7 @@ public class Apps {
     public String getLoginState(HttpServletRequest request){
         String appid = Params.getParamById("appid");//小程序appid
         String secret = Params.getParamById("secret");//小程序secret
-        String js_code = request.getParameter("code");
+        String js_code = request.getParameter("code");//wx.login() 获取的code
         String url = "https://api.weixin.qq.com/sns/jscode2session?appid="
                 +appid+"&secret="+secret+"&js_code="+js_code+"&grant_type=authorization_code";
         String jsonStr = HttpTools.httpRequest(url,"POST",null);
