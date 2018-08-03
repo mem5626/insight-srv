@@ -19,12 +19,12 @@ public class Users {
         try{
             ResultSet rs = DbTools.doQuery("select * from test_chart");
             String chartid = "";
-            String chartdata = "";
+            String title = "";
             diagrams = "{\"records\":[";
             while(rs.next()){
                 chartid =  rs.getString("chartid");
-                chartdata =  rs.getString("chartdata");
-                diagrams += "{\"name\":\""+chartid+"\",\"id\":\""+chartdata+"\"},";
+                title =  rs.getString("title");
+                diagrams += "{\"name\":\""+chartid+"\",\"id\":\""+title+"\"},";
             }
             diagrams += "]}";
         }catch (Exception e){
@@ -32,24 +32,6 @@ public class Users {
             diagrams = "{}";
         }
         return diagrams;
-//        return "{\n" +
-//                "    \"records\": [{\n" +
-//                "            \"name\":\"代理业务成功率统计\",\n" +
-//                "            \"id\":\"mock id\"\n" +
-//                "        }, {\n" +
-//                "            \"name\":\"资产业务增长情况\",\n" +
-//                "            \"id\":\"mock id\"\n" +
-//                "        }, {\n" +
-//                "            \"name\":\"交易并发量监控\",\n" +
-//                "            \"id\":\"mock id\"\n" +
-//                "        }, {\n" +
-//                "            \"name\":\"日终批量运行情况\",\n" +
-//                "            \"id\":\"mock id\"\n" +
-//                "        }, {\n" +
-//                "            \"name\":\"跨境汇款金额统计\",\n" +
-//                "            \"id\":\"mock id\"\n" +
-//                "        }]\n" +
-//                "}";
     }
 
     /*
