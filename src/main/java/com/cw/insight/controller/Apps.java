@@ -25,12 +25,12 @@ public class Apps {
                 "        {\n" +
                 "            \"id\":\"CAPS\",\n" +
                 "            \"title\":\"对公账户体系与产品服务\",\n" +
-                "            \"url\": \"https://images.unsplash.com/photo-1435163570436-d7c1dee361c4?ixlib=rb-0.3.5&s=8c74898a1d66979a9fbbe49366c76904&auto=format&fit=crop&w=500&q=60\"\n" +
+                "            \"url\": \"https://images.unsplash.com/photo-1487544532015-24f380bb9113?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=eddc41ce01e818b8fbb0d2da81061a75&auto=format&fit=crop&w=500&q=60\"\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"id\":\"GCMC\",\n" +
                 "            \"title\":\"全球现金管理\",\n" +
-                "            \"url\": \"https://images.unsplash.com/photo-1533021465698-203cf8b7936f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=226635089169a49de62c0c1f0bc27d5f&auto=format&fit=crop&w=500&q=60\"\n" +
+                "            \"url\": \"https://images.unsplash.com/photo-1526978051370-7f21511778aa?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=129fce2b05ac2d9769fee3493dcf21d6&auto=format&fit=crop&w=500&q=60\"\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"id\":\"MBPS\",\n" +
@@ -40,17 +40,17 @@ public class Apps {
                 "        {\n" +
                 "            \"id\":\"DEMO1\",\n" +
                 "            \"title\":\"用例应用系统1\",\n" +
-                "            \"url\": \"https://images.unsplash.com/photo-1526978051370-7f21511778aa?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=129fce2b05ac2d9769fee3493dcf21d6&auto=format&fit=crop&w=500&q=60\"\n" +
+                "            \"url\": \"https://images.unsplash.com/photo-1533021465698-203cf8b7936f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=226635089169a49de62c0c1f0bc27d5f&auto=format&fit=crop&w=500&q=60\"\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"id\":\"DEMO2\",\n" +
                 "            \"title\":\"用例应用系统2\",\n" +
-                "            \"url\": \"https://images.unsplash.com/photo-1487544532015-24f380bb9113?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=eddc41ce01e818b8fbb0d2da81061a75&auto=format&fit=crop&w=500&q=60\"\n" +
+                "            \"url\": \"https://images.unsplash.com/photo-1435163570436-d7c1dee361c4?ixlib=rb-0.3.5&s=8c74898a1d66979a9fbbe49366c76904&auto=format&fit=crop&w=500&q=60\"\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"id\":\"DEMO3\",\n" +
                 "            \"title\":\"用例应用系统3\",\n" +
-                "            \"url\": \"https://images.unsplash.com/photo-1531683594093-f947c75e0e69?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=0c475e462cb5e621c4de62d3b0330993&auto=format&fit=crop&w=500&q=60\"\n" +
+                "            \"url\": \"https://images.unsplash.com/photo-1435163570436-d7c1dee361c4?ixlib=rb-0.3.5&s=8c74898a1d66979a9fbbe49366c76904&auto=format&fit=crop&w=500&q=60\"\n" +
                 "        }\n" +
                 "    ]\n" +
                 "}";
@@ -59,555 +59,238 @@ public class Apps {
     /*
     获取指定应用的所有层级指标的列表。
      */
-    @RequestMapping("/apps/ID/quotas")
-    public String getAppQuotas(){
+    @RequestMapping("/apps/{appid}/quotas")
+    public String getAppQuotas(@PathVariable String appid,HttpServletRequest request){
+        String x001 = "false";
+        String l001 = "false";
+        String y001 = "false";
+        String y002 = "false";
+        String y003 = "false";
+        try {
+            String openid = request.getParameter("openid");
+            ResultSet rs = DbTools.doQuery("select \n" +
+                    "(select 'true' from insight_collection where chartid='x001') as x001,\n" +
+                    "(select 'true' from insight_collection where chartid='l001') as l001,\n" +
+                    "(select 'true' from insight_collection where chartid='y001') as y001,\n" +
+                    "(select 'true' from insight_collection where chartid='y002') as y002,\n" +
+                    "(select 'true' from insight_collection where chartid='y003') as y003");
+            if (rs.next()) {
+                x001 = "true".equals(rs.getString("x001"))?"true":"false";
+                l001 = "true".equals(rs.getString("x001"))?"true":"false";
+                y001 = "true".equals(rs.getString("x001"))?"true":"false";
+                y002 = "true".equals(rs.getString("x001"))?"true":"false";
+                y003 = "true".equals(rs.getString("x001"))?"true":"false";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "{\n" +
-                "    \"property\":[\n" +
+                "    \"xingneng\":[\n" +
                 "        {\n" +
                 "            \"name\":\"应用服务器CPU使用率\",\n" +
                 "            \"items\":[\n" +
                 "                {\n" +
                 "                    \"name\":\"主站点CPU使用率\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"布拉格站点CPU使用率\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
+                "                    \"id\":\"x001\",\n" +
+                "                    \"ifCollected\":"+x001+"\n" +
                 "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"数据库服务器CPU使用率\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"主站点CPU使用率\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"印尼站点CPU使用率\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"单次耗时过长语句\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"提示付款业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"自动入账业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"执行次数过多语句\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"全球发薪语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"代理业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"数据库硬解析次数过多\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"全球发薪语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"代理业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"数据库统计信息丢失\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"全球发薪语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"代理业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"存在失效的对象\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"全球发薪语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"代理业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        }\n" +
                 "    ],\n" +
-                "    \"performance\":[\n" +
+                "    \"ziyuan\":[\n" +
                 "        {\n" +
                 "            \"name\":\"应用服务器磁盘使用率\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"主站点CPU使用率\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"布拉格站点CPU使用率\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"数据库服务器磁盘使用率\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"主站点CPU使用率\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"印尼站点CPU使用率\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"表空间使用率\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"提示付款业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"自动入账业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"序列使用率\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"全球发薪语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"代理业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"记录数增长\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"全球发薪语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"代理业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        }\n" +
                 "    ],\n" +
-                "    \"batch\":[\n" +
+                "    \"piliang\":[\n" +
                 "        {\n" +
                 "            \"name\":\"批量开始时间\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"主站点CPU使用率\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"布拉格站点CPU使用率\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"批量结束时间\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"主站点CPU使用率\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"印尼站点CPU使用率\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"批量运行时长\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"提示付款业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"自动入账业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"批量中断\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"全球发薪语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"代理业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"批量处理记录数\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"全球发薪语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"代理业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"批量处理成功率\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"全球发薪语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"代理业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"批量重复处理监控\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"全球发薪语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"代理业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"批量数据清理情况\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"全球发薪语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"代理业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        }\n" +
                 "    ],\n" +
-                "    \"online\":[\n" +
+                "    \"lianji\":[\n" +
                 "        {\n" +
                 "            \"name\":\"技术类错误\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"主站点CPU使用率\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"布拉格站点CPU使用率\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"交易成功率\",\n" +
                 "            \"items\":[\n" +
                 "                {\n" +
-                "                    \"name\":\"主站点CPU使用率\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"印尼站点CPU使用率\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
+                "                    \"name\":\"代理业务成功率\",\n" +
+                "                    \"id\":\"l001\",\n" +
+                "                    \"ifCollected\":"+l001+"\n" +
                 "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"交易响应时间\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"提示付款业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"自动入账业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"交易并发数\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"全球发薪语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"代理业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"应用间一致性监控\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"全球发薪语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"代理业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"差错对账\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"全球发薪语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"代理业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"定时任务执行情况\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"全球发薪语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"代理业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"报文指令量/成功率\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"全球发薪语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"代理业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"发送消息量/成功率\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"全球发薪语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"代理业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        }\n" +
                 "    ],\n" +
-                "    \"service\":[\n" +
+                "    \"yewu\":[\n" +
                 "        {\n" +
                 "            \"name\":\"业务量（笔）\",\n" +
                 "            \"items\":[\n" +
                 "                {\n" +
-                "                    \"name\":\"主站点CPU使用率\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
+                "                    \"name\":\"资产池业务增长情况\",\n" +
+                "                    \"id\":\"y001\",\n" +
+                "                    \"ifCollected\":"+y001+"\n" +
                 "                },\n" +
                 "                {\n" +
-                "                    \"name\":\"布拉格站点CPU使用率\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
+                "                    \"name\":\"付款渠道交易量\",\n" +
+                "                    \"id\":\"y002\",\n" +
+                "                    \"ifCollected\":"+y002+"\n" +
                 "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"交易率（笔/秒）\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"主站点CPU使用率\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"印尼站点CPU使用率\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"业务成功率\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"提示付款业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"自动入账业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"交易金额\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"全球发薪语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"代理业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"业务增长数/率\",\n" +
                 "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"全球发薪语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"代理业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
                 "            ]\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"name\":\"业务统计\",\n" +
                 "            \"items\":[\n" +
                 "                {\n" +
-                "                    \"name\":\"全球发薪语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"代理业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
-                "                }\n" +
-                "            ]\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"name\":\"其他\",\n" +
-                "            \"items\":[\n" +
-                "                {\n" +
-                "                    \"name\":\"全球发薪语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":false\n" +
-                "                },\n" +
-                "                {\n" +
-                "                    \"name\":\"代理业务语句监控\",\n" +
-                "                    \"id\":\"mock id\",\n" +
-                "                    \"ifCollected\":true\n" +
+                "                    \"name\":\"对公收费交易分布\",\n" +
+                "                    \"id\":\"y003\",\n" +
+                "                    \"ifCollected\":"+y003+"\n" +
                 "                }\n" +
                 "            ]\n" +
                 "        }\n" +
@@ -622,204 +305,54 @@ public class Apps {
     public String getAppInfo(@PathVariable String appid, HttpServletRequest request){
         if ("CAPS".equals(appid)){
             return "{\n" +
-                    "    \"data\":{\n" +
-                    "        \"title\":\"对公账户体系与产品服务\",\n" +
-                    "        \"bio\":\"提供平台结算账户的结算及相关配套的管理功能。包括账户管理、凭证管理、收支结算、协议维护、风险管控、资金管理、批量处理、账户计息及核算等功能。\"\n" +
+                    "    \"data\": {\n" +
+                    "        \"title\": \"对公账户体系与产品服务\",\n" +
+                    "        \"bio\": \"提供平台结算账户的结算及相关配套的管理功能。包括账户管理、凭证管理、收支结算、协议维护、风险管控、资金管理、批量处理、账户计息及核算等功能。\"\n" +
                     "    },\n" +
-                    "    \"charts\":[\n" +
-                    "        {\n" +
-                    "            \"chart\":{\n" +
-                    "                \"chartType\":\"line\",\n" +
-                    "                \"titleText\":\"一年内应用内异常发生数\",\n" +
-                    "                \"titleSubTex\":\"副标题\",\n" +
-                    "                \"xname\":\"x轴名称\",\n" +
-                    "                \"yname\":\"y轴名称\",\n" +
-                    "                \"graExpText\":\"图标说明文字\",\n" +
-                    "                \"graStaText\":\"各类统计值，如：平均值，最大值，最小值等\"\n" +
-                    "            },\n" +
-                    "            \"data\":[\n" +
-                    "                10,\n" +
-                    "                1,\n" +
-                    "                2,\n" +
-                    "                8,\n" +
-                    "                0,\n" +
-                    "                0,\n" +
-                    "                1,\n" +
-                    "                3,\n" +
-                    "                0,\n" +
-                    "                7,\n" +
-                    "                1,\n" +
-                    "                4\n" +
-                    "            ]\n" +
-                    "        },\n" +
-                    "        {\n" +
-                    "            \"chart\":{\n" +
-                    "                \"chartType\":\"pie\",\n" +
-                    "                \"titleText\":\"应用指标分布\",\n" +
-                    "                \"titleSubTex\":\"副标题\",\n" +
-                    "                \"xname\":\"x轴名称\",\n" +
-                    "                \"yname\":\"y轴名称\",\n" +
-                    "                \"graExpText\":\"图标说明文字\",\n" +
-                    "                \"graStaText\":\"各类统计值，如：平均值，最大值，最小值等\"\n" +
-                    "            },\n" +
-                    "            \"data\":[\n" +
-                    "                {\n" +
-                    "                    \"name\":\"批量\",\n" +
-                    "                    \"value\":5\n" +
-                    "                },\n" +
-                    "                {\n" +
-                    "                    \"name\":\"联机\",\n" +
-                    "                    \"value\":9\n" +
-                    "                },\n" +
-                    "                {\n" +
-                    "                    \"name\":\"业务\",\n" +
-                    "                    \"value\":13\n" +
-                    "                },\n" +
-                    "                {\n" +
-                    "                    \"name\":\"性能\",\n" +
-                    "                    \"value\":11\n" +
-                    "                },\n" +
-                    "                {\n" +
-                    "                    \"name\":\"资源\",\n" +
-                    "                    \"value\":16\n" +
-                    "                }\n" +
-                    "            ]\n" +
-                    "        }\n" +
-                    "    ]\n" +
+                    "    \"charts\": {\n" +
+                    "        \"line\":[10, 1, 2, 8, 0, 0, 1, 3, 0, 7, 1, 4],\n" +
+                    "        \"pie\": [\n" +
+                    "            {\"name\": \"批量\", \"value\": 5},\n" +
+                    "            {\"name\": \"联机\", \"value\": 9},\n" +
+                    "            {\"name\": \"业务\", \"value\": 13},\n" +
+                    "            {\"name\": \"性能\", \"value\": 11},\n" +
+                    "            {\"name\": \"资源\", \"value\": 16}\n" +
+                    "        ]\n" +
+                    "    }\n" +
                     "}";
         }else if ("MBPS".equals(appid)){
             return "{\n" +
-                    "    \"data\":{\n" +
-                    "        \"title\":\"多银行支付\",\n" +
-                    "        \"bio\":\"提供非本行账户（卡）跨行支付功能，主要包括以下四部分内容：1.介入模块；2.支付路由；3.第三方支付渠道管理；4.内部管理。\"\n" +
+                    "    \"data\": {\n" +
+                    "        \"title\": \"多银行支付\",\n" +
+                    "        \"bio\": \"提供非本行账户（卡）跨行支付功能，主要包括以下四部分内容：1.介入模块；2.支付路由；3.第三方支付渠道管理；4.内部管理。\"\n" +
                     "    },\n" +
-                    "    \"charts\":[\n" +
-                    "        {\n" +
-                    "            \"chart\":{\n" +
-                    "                \"chartType\":\"line\",\n" +
-                    "                \"titleText\":\"一年内应用内异常发生数\",\n" +
-                    "                \"titleSubTex\":\"副标题\",\n" +
-                    "                \"xname\":\"x轴名称\",\n" +
-                    "                \"yname\":\"y轴名称\",\n" +
-                    "                \"graExpText\":\"图标说明文字\",\n" +
-                    "                \"graStaText\":\"各类统计值，如：平均值，最大值，最小值等\"\n" +
-                    "            },\n" +
-                    "            \"data\":[\n" +
-                    "                10,\n" +
-                    "                1,\n" +
-                    "                2,\n" +
-                    "                8,\n" +
-                    "                0,\n" +
-                    "                0,\n" +
-                    "                1,\n" +
-                    "                3,\n" +
-                    "                0,\n" +
-                    "                7,\n" +
-                    "                1,\n" +
-                    "                4\n" +
-                    "            ]\n" +
-                    "        },\n" +
-                    "        {\n" +
-                    "            \"chart\":{\n" +
-                    "                \"chartType\":\"pie\",\n" +
-                    "                \"titleText\":\"应用指标分布\",\n" +
-                    "                \"titleSubTex\":\"副标题\",\n" +
-                    "                \"xname\":\"x轴名称\",\n" +
-                    "                \"yname\":\"y轴名称\",\n" +
-                    "                \"graExpText\":\"图标说明文字\",\n" +
-                    "                \"graStaText\":\"各类统计值，如：平均值，最大值，最小值等\"\n" +
-                    "            },\n" +
-                    "            \"data\":[\n" +
-                    "                {\n" +
-                    "                    \"name\":\"批量\",\n" +
-                    "                    \"value\":5\n" +
-                    "                },\n" +
-                    "                {\n" +
-                    "                    \"name\":\"联机\",\n" +
-                    "                    \"value\":9\n" +
-                    "                },\n" +
-                    "                {\n" +
-                    "                    \"name\":\"业务\",\n" +
-                    "                    \"value\":13\n" +
-                    "                },\n" +
-                    "                {\n" +
-                    "                    \"name\":\"性能\",\n" +
-                    "                    \"value\":11\n" +
-                    "                },\n" +
-                    "                {\n" +
-                    "                    \"name\":\"资源\",\n" +
-                    "                    \"value\":16\n" +
-                    "                }\n" +
-                    "            ]\n" +
-                    "        }\n" +
-                    "    ]\n" +
+                    "    \"charts\": {\n" +
+                    "        \"line\":[10, 1, 2, 8, 0, 0, 1, 3, 0, 7, 1, 4],\n" +
+                    "        \"pie\": [\n" +
+                    "            {\"name\": \"批量\", \"value\": 5},\n" +
+                    "            {\"name\": \"联机\", \"value\": 9},\n" +
+                    "            {\"name\": \"业务\", \"value\": 13},\n" +
+                    "            {\"name\": \"性能\", \"value\": 11},\n" +
+                    "            {\"name\": \"资源\", \"value\": 16}\n" +
+                    "        ]\n" +
+                    "    }\n" +
                     "}";
         }else{
             return "{\n" +
-                    "    \"data\":{\n" +
-                    "        \"title\":\"全球现金管理\",\n" +
-                    "        \"bio\":\"为我行现金管理企业客户提供流动性管理、收付款、信息服务、投融资等一系列现金管理产品组合服务。\"\n" +
+                    "    \"data\": {\n" +
+                    "        \"title\": \"全球现金管理\",\n" +
+                    "        \"bio\": \"为我行现金管理企业客户提供流动性管理、收付款、信息服务、投融资等一系列现金管理产品组合服务。\"\n" +
                     "    },\n" +
-                    "    \"charts\":[\n" +
-                    "        {\n" +
-                    "            \"chart\":{\n" +
-                    "                \"chartType\":\"line\",\n" +
-                    "                \"titleText\":\"一年内应用内异常发生数\",\n" +
-                    "                \"titleSubTex\":\"副标题\",\n" +
-                    "                \"xname\":\"x轴名称\",\n" +
-                    "                \"yname\":\"y轴名称\",\n" +
-                    "                \"graExpText\":\"图标说明文字\",\n" +
-                    "                \"graStaText\":\"各类统计值，如：平均值，最大值，最小值等\"\n" +
-                    "            },\n" +
-                    "            \"data\":[\n" +
-                    "                10,\n" +
-                    "                1,\n" +
-                    "                2,\n" +
-                    "                8,\n" +
-                    "                0,\n" +
-                    "                0,\n" +
-                    "                1,\n" +
-                    "                3,\n" +
-                    "                0,\n" +
-                    "                7,\n" +
-                    "                1,\n" +
-                    "                4\n" +
-                    "            ]\n" +
-                    "        },\n" +
-                    "        {\n" +
-                    "            \"chart\":{\n" +
-                    "                \"chartType\":\"pie\",\n" +
-                    "                \"titleText\":\"应用指标分布\",\n" +
-                    "                \"titleSubTex\":\"副标题\",\n" +
-                    "                \"xname\":\"x轴名称\",\n" +
-                    "                \"yname\":\"y轴名称\",\n" +
-                    "                \"graExpText\":\"图标说明文字\",\n" +
-                    "                \"graStaText\":\"各类统计值，如：平均值，最大值，最小值等\"\n" +
-                    "            },\n" +
-                    "            \"data\":[\n" +
-                    "                {\n" +
-                    "                    \"name\":\"批量\",\n" +
-                    "                    \"value\":5\n" +
-                    "                },\n" +
-                    "                {\n" +
-                    "                    \"name\":\"联机\",\n" +
-                    "                    \"value\":9\n" +
-                    "                },\n" +
-                    "                {\n" +
-                    "                    \"name\":\"业务\",\n" +
-                    "                    \"value\":13\n" +
-                    "                },\n" +
-                    "                {\n" +
-                    "                    \"name\":\"性能\",\n" +
-                    "                    \"value\":11\n" +
-                    "                },\n" +
-                    "                {\n" +
-                    "                    \"name\":\"资源\",\n" +
-                    "                    \"value\":16\n" +
-                    "                }\n" +
-                    "            ]\n" +
-                    "        }\n" +
-                    "    ]\n" +
+                    "    \"charts\": {\n" +
+                    "        \"line\":[10, 1, 2, 8, 0, 0, 1, 3, 0, 7, 1, 4],\n" +
+                    "        \"pie\": [\n" +
+                    "            {\"name\": \"批量\", \"value\": 5},\n" +
+                    "            {\"name\": \"联机\", \"value\": 9},\n" +
+                    "            {\"name\": \"业务\", \"value\": 13},\n" +
+                    "            {\"name\": \"性能\", \"value\": 11},\n" +
+                    "            {\"name\": \"资源\", \"value\": 16}\n" +
+                    "        ]\n" +
+                    "    }\n" +
                     "}";
         }
 
@@ -850,7 +383,7 @@ public class Apps {
             openid = "";
         }
         if(!"".equals(openid)){
-            if(DbTools.checkIfExist("select count(1) from insight_user where openid='"+openid+"'")){
+            if(!DbTools.checkIfExist("select count(1) from insight_user where openid='"+openid+"'")){
                 DbTools.doUpdate("insert into insight_user(openid,last_time) values('"+openid+"',date_format(now(),'%Y-%m-%d %H:%i:%S'))");
             }
         }

@@ -17,7 +17,7 @@ public class Users {
     public String getUserDiagrams(@PathVariable String openid) {
         String diagrams = "{}";
         try {
-            ResultSet rs = DbTools.doQuery("select chartid,(select t.title from test_chart t where t.chartid=c.chartid) as title from insight_collection c where openid='"+openid+"'");
+            ResultSet rs = DbTools.doQuery("select chartid,(select t.title from test_chart t where t.chartid=c.chartid) as title from insight_collection c where openid='" + openid + "'");
             String chartid = "";
             String title = "";
             diagrams = "{\"records\":[";
@@ -25,6 +25,9 @@ public class Users {
                 chartid = rs.getString("chartid");
                 title = rs.getString("title");
                 diagrams += "{\"name\":\"" + chartid + "\",\"id\":\"" + title + "\"},";
+            }
+            if (",".equals(diagrams.substring(diagrams.length() - 1))) {
+                diagrams = diagrams.substring(0,diagrams.length()-1);
             }
             diagrams += "]}";
         } catch (Exception e) {
@@ -39,23 +42,32 @@ public class Users {
      */
     @RequestMapping("/users/{openid}/diagrams/{chartid}")
     public String toggleUserDiagram(@PathVariable String openid, @PathVariable String chartid, HttpServletRequest request) {
+        String operflag = request.getParameter("operflag");
         try {
             ResultSet rs = DbTools.doQuery("select * from insight_collection where openid='" + openid + "' and chartid='" + chartid + "'");
             if (rs != null && rs.next()) {
+                if("true".equals(operflag)){//收藏操作，但已经收藏过了
+                    return "{\n" +
+                            "    \"ifCollected\":true\n" +
+                            "}";
+                }
                 //删除
                 DbTools.doUpdate("delete from insight_collection where openid='" + openid + "' and chartid='" + chartid + "'");
             } else {
+                if("false".equals(operflag)){//取消收藏操作，但原先就没有收藏过。
+                    return "{\n" +
+                            "    \"ifCollected\":false\n" +
+                            "}";
+                }
                 //新增
                 DbTools.doUpdate("insert into insight_collection(openid,chartid) values('" + openid + "','" + chartid + "')");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //只需要返回成功或失败？
+
         return "{\n" +
-                "    \"diagramId\": \"mock id\",\n" +
-                "    \"userId\": \"mock id\",\n" +
-                "    \"ifCollected\": true\n" +
+                "    \"ifCollected\":true\n" +
                 "}";
     }
 

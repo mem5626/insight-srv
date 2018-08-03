@@ -76,7 +76,7 @@ public class DbTools {
         return false;
     }
 
-//    public static void main(String args[]) {
+    public static void main(String args[]) {
 //        try {
 //            DbTools jdbc = new DbTools();
 //            jdbc.openConn();
@@ -88,5 +88,10 @@ public class DbTools {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-//    }
+        String a = "abcdef";
+        String x = a.substring(0,a.length()-1);
+        String v = a.substring(a.length()-1);
+        System.out.println(x);
+        System.out.println(v);
+    }
 }
