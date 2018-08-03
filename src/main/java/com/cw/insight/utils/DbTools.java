@@ -1,7 +1,5 @@
 package com.cw.insight.utils;
 
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
-
 import java.sql.*;
 import java.util.List;
 
