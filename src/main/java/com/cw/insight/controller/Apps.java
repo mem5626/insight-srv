@@ -68,18 +68,18 @@ public class Apps {
         String y003 = "false";
         try {
             String openid = request.getParameter("openid");
-            ResultSet rs = DbTools.doQuery("select \n" +
-                    "(select 'true' from insight_collection where chartid='x001') as x001,\n" +
-                    "(select 'true' from insight_collection where chartid='l001') as l001,\n" +
-                    "(select 'true' from insight_collection where chartid='y001') as y001,\n" +
-                    "(select 'true' from insight_collection where chartid='y002') as y002,\n" +
-                    "(select 'true' from insight_collection where chartid='y003') as y003");
+            ResultSet rs = DbTools.doQuery("select " +
+                    "(select 'true' from insight_collection where openid='"+openid+"' and chartid='x001') as x001," +
+                    "(select 'true' from insight_collection where openid='"+openid+"' and chartid='l001') as l001," +
+                    "(select 'true' from insight_collection where openid='"+openid+"' and chartid='y001') as y001," +
+                    "(select 'true' from insight_collection where openid='"+openid+"' and chartid='y002') as y002," +
+                    "(select 'true' from insight_collection where openid='"+openid+"' and chartid='y003') as y003");
             if (rs.next()) {
                 x001 = "true".equals(rs.getString("x001"))?"true":"false";
-                l001 = "true".equals(rs.getString("x001"))?"true":"false";
-                y001 = "true".equals(rs.getString("x001"))?"true":"false";
-                y002 = "true".equals(rs.getString("x001"))?"true":"false";
-                y003 = "true".equals(rs.getString("x001"))?"true":"false";
+                l001 = "true".equals(rs.getString("l001"))?"true":"false";
+                y001 = "true".equals(rs.getString("y001"))?"true":"false";
+                y002 = "true".equals(rs.getString("y002"))?"true":"false";
+                y003 = "true".equals(rs.getString("y003"))?"true":"false";
             }
         } catch (Exception e) {
             e.printStackTrace();
