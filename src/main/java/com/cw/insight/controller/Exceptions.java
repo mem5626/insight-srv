@@ -64,7 +64,7 @@ public class Exceptions {
                     exceptions += "{" +
                             "\"date\":\"" + datePart + "\"," +
                             "\"exceptions\":[" +
-                            "{\"id\":\"" + rs.getString("exid") + "\"" +
+                            "{\"id\":\"" + rs.getString("exid") + "\"," +
                             "\"time\":\"" + rs.getString("des_time").substring(11, 16) + "\"," +
                             "\"title\":\"" + rs.getString("title") + "\"," +
                             "\"app\":\"" + rs.getString("appid") + "\"" +
@@ -93,8 +93,14 @@ public class Exceptions {
             if (rs.next()) {
                 String app = "\"app\":{\"name\":\"" + rs.getString("appid") + "\",\"id\":\"" + rs.getString("appid") + "\"}";
                 String description = "\"description\":{\"title\":\"" + rs.getString("title") + "\",\"content\":\"" + rs.getString("description") + "\",\"time\":\"" + rs.getString("des_time") + "\"}";
+                String solution_c = rs.getString("solution");
+                String solution_t = rs.getString("sol_time");
                 String solution = "\"solution\":{\"content\":\"" + rs.getString("solution") + "\",\"time\":\"" + rs.getString("sol_time") + "\"}";
-                exception = "{" + app + "," + description + "," + solution + "}";
+                if(solution_c == null && solution_t == null){
+                    exception = "{" + app + "," + description + "}";
+                }else{
+                    exception = "{" + app + "," + description + "," + solution + "}";
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -103,7 +109,7 @@ public class Exceptions {
     }
 
     @RequestMapping("/msg/warning")
-    public void doWarning(HttpServletRequest request) {
+    public boolean doWarning(HttpServletRequest request) {
         String appid = request.getParameter("appid");
         String title = request.getParameter("title");
         String content = request.getParameter("content");
@@ -111,18 +117,28 @@ public class Exceptions {
         String customid = request.getParameter("customid");
         String sql = "insert into insight_app_exception(exid,appid,title,description,des_time,solution,sol_time,is_handled,customid) " +
                 "values(unix_timestamp(now()),'"+appid+"','"+title+"','"+content+"','"+time+"','','','0','"+customid+"')";
-        DbTools.doUpdate(sql);
+        try{
+            DbTools.doUpdate(sql);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
         //http://localhost:8080/msg/warning?appid=TEST&title=titletitle&content=contentcontent&time=2018-12-01 11:11:11&customid=customidcustomid
     }
 
     @RequestMapping("/msg/finished")
-    public void doFinished(HttpServletRequest request) {
+    public boolean doFinished(HttpServletRequest request) {
         String appid = request.getParameter("appid");
         String content = request.getParameter("content");
         String time = request.getParameter("time");
         String customid = request.getParameter("customid");
         String sql = "update insight_app_exception set solution='"+content+"',sol_time='"+time+"',is_handled='1' where appid='"+appid+"' and customid='"+customid+"'";
-        DbTools.doUpdate(sql);
+        try{
+            DbTools.doUpdate(sql);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
         //http://localhost:8080/msg/finished?appid=TEST&content=ccccccc&time=2018-11-11 11:11:11&customid=customidcustomid
     }
 }
