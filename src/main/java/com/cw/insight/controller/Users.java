@@ -24,7 +24,7 @@ public class Users {
             while (rs.next()) {
                 chartid = rs.getString("chartid");
                 title = rs.getString("title");
-                diagrams += "{\"name\":\"" + chartid + "\",\"id\":\"" + title + "\"},";
+                diagrams += "{\"name\":\"" + title + "\",\"id\":\"" + chartid + "\"},";
             }
             if (",".equals(diagrams.substring(diagrams.length() - 1))) {
                 diagrams = diagrams.substring(0,diagrams.length()-1);
