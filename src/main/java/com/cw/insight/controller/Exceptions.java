@@ -1,6 +1,7 @@
 package com.cw.insight.controller;
 
 import com.cw.insight.utils.DbTools;
+import com.cw.insight.utils.HttpTools;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -85,7 +86,7 @@ public class Exceptions {
     /*
     获取未处理的异常详细。
      */
-    @RequestMapping("/exception/{exid}")
+    @RequestMapping("/exceptions/{exid}")
     public String getExceptionById(@PathVariable String exid) {
         String exception = "{}";
         try {
@@ -96,9 +97,9 @@ public class Exceptions {
                 String solution_c = rs.getString("solution");
                 String solution_t = rs.getString("sol_time");
                 String solution = "\"solution\":{\"content\":\"" + rs.getString("solution") + "\",\"time\":\"" + rs.getString("sol_time") + "\"}";
-                if(solution_c == null && solution_t == null){
+                if (solution_c == null && solution_t == null) {
                     exception = "{" + app + "," + description + "}";
-                }else{
+                } else {
                     exception = "{" + app + "," + description + "," + solution + "}";
                 }
             }
@@ -116,11 +117,13 @@ public class Exceptions {
         String time = request.getParameter("time");
         String customid = request.getParameter("customid");
         String sql = "insert into insight_app_exception(exid,appid,title,description,des_time,solution,sol_time,is_handled,customid) " +
-                "values(unix_timestamp(now()),'"+appid+"','"+title+"','"+content+"','"+time+"','','','0','"+customid+"')";
-        try{
+                "values(unix_timestamp(now()),'" + appid + "','" + title + "','" + content + "','" + time + "','','','0','" + customid + "')";
+        try {
             DbTools.doUpdate(sql);
+            HttpTools ht = new HttpTools();
+            ht.cycleTemplate(appid, title, time);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
         //http://localhost:8080/msg/warning?appid=TEST&title=titletitle&content=contentcontent&time=2018-12-01 11:11:11&customid=customidcustomid
@@ -132,11 +135,11 @@ public class Exceptions {
         String content = request.getParameter("content");
         String time = request.getParameter("time");
         String customid = request.getParameter("customid");
-        String sql = "update insight_app_exception set solution='"+content+"',sol_time='"+time+"',is_handled='1' where appid='"+appid+"' and customid='"+customid+"'";
-        try{
+        String sql = "update insight_app_exception set solution='" + content + "',sol_time='" + time + "',is_handled='1' where appid='" + appid + "' and customid='" + customid + "'";
+        try {
             DbTools.doUpdate(sql);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
         //http://localhost:8080/msg/finished?appid=TEST&content=ccccccc&time=2018-11-11 11:11:11&customid=customidcustomid
