@@ -52,11 +52,13 @@ public class HttpTools {
             String wx_appid = Params.getParamById("appid");
             String wx_secret = Params.getParamById("secret");
             String template_id = Params.getParamById("template_id");
-            ResultSet rs = DbTools.doQuery("select t.openid openid,min(t.new_time) new_time from insight_medium t " +
-                    "where ((UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(t.new_time))/(60*60*24)) < 6 and t.is_used = '0' " +
-                    "group by t.openid");
+            ResultSet rs = DbTools.doQuery("select distinct(t.openid) dis_openid from insight_medium t " +
+                    "where ((UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(t.new_time))/(60*60*24)) < 6 and t.is_used = '0'");
+            java.lang.System.out.println("rs=" + rs);
             while (rs.next()) {
-                ResultSet medium = DbTools.doQuery("select * from insight_medium where openid='" + rs.getString("openid") + "' and new_time='" + rs.getString("new_time") + "'");
+                ResultSet medium = DbTools.doQuery("select * from ( " +
+                        "select * from insight_medium t where ((UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(t.new_time))/(60*60*24)) < 6 and t.is_used = '0' " +
+                        ") m where m.openid = '"+rs.getString("dis_openid")+"' order by m.openid,m.new_time;");
                 if (medium.next()) {
                     String openid = medium.getString("openid");
                     String formid = medium.getString("formid");
@@ -107,7 +109,7 @@ public class HttpTools {
                     "      }\n" +
                     "  }\n" +
                     "}";
-            //jsonStr = HttpTools.httpRequest(template_url, "POST", paramJson);-------------test
+            jsonStr = HttpTools.httpRequest(template_url, "POST", paramJson);
             java.lang.System.out.println("template_url=" + jsonStr);
 
         } catch (ParseException e) {

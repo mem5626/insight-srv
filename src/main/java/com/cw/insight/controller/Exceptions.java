@@ -120,8 +120,8 @@ public class Exceptions {
                 "values(unix_timestamp(now()),'" + appid + "','" + title + "','" + content + "','" + time + "','','','0','" + customid + "')";
         try {
             DbTools.doUpdate(sql);
-            HttpTools ht = new HttpTools();
-            ht.cycleTemplate(appid, title, time);
+            //HttpTools ht = new HttpTools();
+            //ht.cycleTemplate(appid, title, time);
             return true;
         } catch (Exception e) {
             return false;
