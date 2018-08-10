@@ -24,33 +24,38 @@ public class Apps {
                 "    \"records\":[\n" +
                 "        {\n" +
                 "            \"id\":\"CAPS\",\n" +
+                "            \"app\":\"CAPS\",\n" +
                 "            \"title\":\"对公账户体系与产品服务\",\n" +
-                "            \"url\": \"https://images.unsplash.com/photo-1487544532015-24f380bb9113?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=eddc41ce01e818b8fbb0d2da81061a75&auto=format&fit=crop&w=500&q=60\"\n" +
+                "            \"url\": \"https://www.hi5399.xyz/wx15.png\"\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"id\":\"GCMC\",\n" +
+                "            \"app\":\"GCMC\",\n" +
                 "            \"title\":\"全球现金管理\",\n" +
-                "            \"url\": \"https://images.unsplash.com/photo-1526978051370-7f21511778aa?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=129fce2b05ac2d9769fee3493dcf21d6&auto=format&fit=crop&w=500&q=60\"\n" +
+                "            \"url\": \"https://www.hi5399.xyz/wx16.png\"\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"id\":\"MBPS\",\n" +
+                "            \"app\":\"MBPS\",\n" +
                 "            \"title\":\"多银行支付\",\n" +
-                "            \"url\": \"https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=47d2b1f32cc05c976af4a39256e01cba&auto=format&fit=crop&w=500&q=60\"\n" +
+                "            \"url\": \"https://www.hi5399.xyz/wx17.png\"\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"id\":\"DEMO1\",\n" +
+                "            \"app\":\"DEMO1\",\n" +
                 "            \"title\":\"用例应用系统1\",\n" +
-                "            \"url\": \"https://images.unsplash.com/photo-1533021465698-203cf8b7936f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=226635089169a49de62c0c1f0bc27d5f&auto=format&fit=crop&w=500&q=60\"\n" +
+                "            \"url\": \"https://www.hi5399.xyz/wx18.png\"\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"id\":\"DEMO2\",\n" +
                 "            \"title\":\"用例应用系统2\",\n" +
-                "            \"url\": \"https://images.unsplash.com/photo-1435163570436-d7c1dee361c4?ixlib=rb-0.3.5&s=8c74898a1d66979a9fbbe49366c76904&auto=format&fit=crop&w=500&q=60\"\n" +
+                "            \"url\": \"https://www.hi5399.xyz/wx21.png\"\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"id\":\"DEMO3\",\n" +
+                "            \"app\":\"DEMO3\",\n" +
                 "            \"title\":\"用例应用系统3\",\n" +
-                "            \"url\": \"https://images.unsplash.com/photo-1435163570436-d7c1dee361c4?ixlib=rb-0.3.5&s=8c74898a1d66979a9fbbe49366c76904&auto=format&fit=crop&w=500&q=60\"\n" +
+                "            \"url\": \"https://www.hi5399.xyz/wx23.png\"\n" +
                 "        }\n" +
                 "    ]\n" +
                 "}";
@@ -306,6 +311,7 @@ public class Apps {
         if ("CAPS".equals(appid)){
             return "{\n" +
                     "    \"data\": {\n" +
+                    "        \"app\": \"CAPS\",\n" +
                     "        \"title\": \"对公账户体系与产品服务\",\n" +
                     "        \"bio\": \"提供平台结算账户的结算及相关配套的管理功能。包括账户管理、凭证管理、收支结算、协议维护、风险管控、资金管理、批量处理、账户计息及核算等功能。\"\n" +
                     "    },\n" +
@@ -323,6 +329,7 @@ public class Apps {
         }else if ("MBPS".equals(appid)){
             return "{\n" +
                     "    \"data\": {\n" +
+                    "        \"app\": \"MBPS\",\n" +
                     "        \"title\": \"多银行支付\",\n" +
                     "        \"bio\": \"提供非本行账户（卡）跨行支付功能，主要包括以下四部分内容：1.介入模块；2.支付路由；3.第三方支付渠道管理；4.内部管理。\"\n" +
                     "    },\n" +
@@ -340,6 +347,7 @@ public class Apps {
         }else{
             return "{\n" +
                     "    \"data\": {\n" +
+                    "        \"app\": \"GCMC\",\n" +
                     "        \"title\": \"全球现金管理\",\n" +
                     "        \"bio\": \"为我行现金管理企业客户提供流动性管理、收付款、信息服务、投融资等一系列现金管理产品组合服务。\"\n" +
                     "    },\n" +

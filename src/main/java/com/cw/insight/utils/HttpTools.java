@@ -106,6 +106,9 @@ public class HttpTools {
                     "      },\n" +
                     "      \"keyword2\": {\n" +
                     "          \"value\": \"" + appName + "\"\n" +
+                    "      },\n" +
+                    "      \"keyword3\": {\n" +
+                    "          \"value\": \"" + time + "\"\n" +
                     "      }\n" +
                     "  }\n" +
                     "}";
