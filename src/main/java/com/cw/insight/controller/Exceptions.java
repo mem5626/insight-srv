@@ -1,5 +1,6 @@
 package com.cw.insight.controller;
 
+import com.cw.insight.data.Params;
 import com.cw.insight.utils.DbTools;
 import com.cw.insight.utils.HttpTools;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -120,8 +121,11 @@ public class Exceptions {
                 "values(unix_timestamp(now()),'" + appid + "','" + title + "','" + content + "','" + time + "','','','0','" + customid + "')";
         try {
             DbTools.doUpdate(sql);
-            HttpTools ht = new HttpTools();
-            ht.cycleTemplate(appid, title, time);
+            String temp_switch = Params.getParamById("temp_switch");//消息推送开关
+            if("1".equals(temp_switch)){
+                HttpTools ht = new HttpTools();
+                ht.cycleTemplate(appid, title, time);
+            }
             return true;
         } catch (Exception e) {
             return false;
