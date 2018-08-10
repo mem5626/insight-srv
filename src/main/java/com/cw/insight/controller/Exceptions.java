@@ -97,7 +97,7 @@ public class Exceptions {
                 String solution_c = rs.getString("solution");
                 String solution_t = rs.getString("sol_time");
                 String solution = "\"solution\":{\"content\":\"" + rs.getString("solution") + "\",\"time\":\"" + rs.getString("sol_time") + "\"}";
-                if (solution_c == null && solution_t == null) {
+                if ((solution_c == null && solution_t == null) || ("null".equals(solution_c) && "null".equals(solution_t)) || ("".equals(solution_c) && "".equals(solution_t))) {
                     exception = "{" + app + "," + description + "}";
                 } else {
                     exception = "{" + app + "," + description + "," + solution + "}";
@@ -120,8 +120,8 @@ public class Exceptions {
                 "values(unix_timestamp(now()),'" + appid + "','" + title + "','" + content + "','" + time + "','','','0','" + customid + "')";
         try {
             DbTools.doUpdate(sql);
-            //HttpTools ht = new HttpTools();
-            //ht.cycleTemplate(appid, title, time);
+            HttpTools ht = new HttpTools();
+            ht.cycleTemplate(appid, title, time);
             return true;
         } catch (Exception e) {
             return false;
