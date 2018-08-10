@@ -19,7 +19,7 @@ public class Exceptions {
     public String getUnhandledExceptions() {
         String exceptions = "";
         try {
-            ResultSet rs = DbTools.doQuery("select * from insight_app_exception where is_handled='1' order by des_time desc");
+            ResultSet rs = DbTools.doQuery("select * from insight_app_exception where is_handled='0' order by des_time desc");
             exceptions = "{\"records\":[";
             while (rs.next()) {
                 exceptions += "{\"id\":\"" + rs.getString("exid") + "\"," +
