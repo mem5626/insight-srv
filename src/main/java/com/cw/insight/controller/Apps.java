@@ -16,53 +16,36 @@ import java.sql.ResultSet;
 @RestController
 public class Apps {
     /*
-    获取所有应用列表。
+    应用列表
      */
     @RequestMapping("/apps")
     public String getApps(){
-        return "{\n" +
-                "    \"records\":[\n" +
-                "        {\n" +
-                "            \"id\":\"CAPS\",\n" +
-                "            \"app\":\"CAPS\",\n" +
-                "            \"title\":\"对公账户体系与产品服务\",\n" +
-                "            \"url\": \"https://www.hi5399.xyz/wx15.png\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"id\":\"GCMC\",\n" +
-                "            \"app\":\"GCMC\",\n" +
-                "            \"title\":\"全球现金管理\",\n" +
-                "            \"url\": \"https://www.hi5399.xyz/wx16.png\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"id\":\"MBPS\",\n" +
-                "            \"app\":\"MBPS\",\n" +
-                "            \"title\":\"多银行支付\",\n" +
-                "            \"url\": \"https://www.hi5399.xyz/wx17.png\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"id\":\"DEMO1\",\n" +
-                "            \"app\":\"DEMO1\",\n" +
-                "            \"title\":\"用例应用系统1\",\n" +
-                "            \"url\": \"https://www.hi5399.xyz/wx18.png\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"id\":\"DEMO2\",\n" +
-                "            \"title\":\"用例应用系统2\",\n" +
-                "            \"url\": \"https://www.hi5399.xyz/wx21.png\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"id\":\"DEMO3\",\n" +
-                "            \"app\":\"DEMO3\",\n" +
-                "            \"title\":\"用例应用系统3\",\n" +
-                "            \"url\": \"https://www.hi5399.xyz/wx23.png\"\n" +
-                "        }\n" +
-                "    ]\n" +
-                "}";
+        String apps = "{}";
+        try {
+            ResultSet rs = DbTools.doQuery("select * from insight_app");
+            String appid = "";
+            String appname = "";
+            String pic_url = "";
+            apps = "{\"records\":[";
+            while (rs.next()) {
+                appid = rs.getString("appid");
+                appname = rs.getString("appname");
+                pic_url = rs.getString("pic_url");
+                apps += "{\"id\":\"" + appid + "\",\"app\":\"" + appid + "\",\"title\":\"" + appname + "\",\"url\":\"" + pic_url + "\"},";
+            }
+            if (",".equals(apps.substring(apps.length() - 1))) {
+                apps = apps.substring(0, apps.length() - 1);
+            }
+            apps += "]}";
+        } catch (Exception e) {
+            e.printStackTrace();
+            apps = "{}";
+        }
+        return apps;
     }
 
     /*
-    获取指定应用的所有层级指标的列表。
+    指标列表
      */
     @RequestMapping("/apps/{appid}/quotas")
     public String getAppQuotas(@PathVariable String appid,HttpServletRequest request){
@@ -304,105 +287,42 @@ public class Apps {
     }
 
     /*
-    获取指定应用的详细信息。
+    应用详细信息
      */
     @RequestMapping("/apps/{appid}")
-    public String getAppInfo(@PathVariable String appid, HttpServletRequest request){
-        if ("CAPS".equals(appid)){
-            return "{\n" +
-                    "    \"data\": {\n" +
-                    "        \"app\": \"CAPS\",\n" +
-                    "        \"title\": \"对公账户体系与产品服务\",\n" +
-                    "        \"bio\": \"提供平台结算账户的结算及相关配套的管理功能。包括账户管理、凭证管理、收支结算、协议维护、风险管控、资金管理、批量处理、账户计息及核算等功能。\"\n" +
-                    "    },\n" +
-                    "    \"charts\": {\n" +
-                    "        \"line\":[10, 1, 2, 8, 0, 0, 1, 3, 0, 7, 1, 4],\n" +
-                    "        \"pie\": [\n" +
-                    "            {\"name\": \"批量\", \"value\": 5},\n" +
-                    "            {\"name\": \"联机\", \"value\": 9},\n" +
-                    "            {\"name\": \"业务\", \"value\": 13},\n" +
-                    "            {\"name\": \"性能\", \"value\": 11},\n" +
-                    "            {\"name\": \"资源\", \"value\": 16}\n" +
-                    "        ]\n" +
-                    "    }\n" +
-                    "}";
-        }else if ("MBPS".equals(appid)){
-            return "{\n" +
-                    "    \"data\": {\n" +
-                    "        \"app\": \"MBPS\",\n" +
-                    "        \"title\": \"多银行支付\",\n" +
-                    "        \"bio\": \"提供非本行账户（卡）跨行支付功能，主要包括以下四部分内容：1.介入模块；2.支付路由；3.第三方支付渠道管理；4.内部管理。\"\n" +
-                    "    },\n" +
-                    "    \"charts\": {\n" +
-                    "        \"line\":[10, 1, 2, 8, 0, 0, 1, 3, 0, 7, 1, 4],\n" +
-                    "        \"pie\": [\n" +
-                    "            {\"name\": \"批量\", \"value\": 5},\n" +
-                    "            {\"name\": \"联机\", \"value\": 9},\n" +
-                    "            {\"name\": \"业务\", \"value\": 13},\n" +
-                    "            {\"name\": \"性能\", \"value\": 11},\n" +
-                    "            {\"name\": \"资源\", \"value\": 16}\n" +
-                    "        ]\n" +
-                    "    }\n" +
-                    "}";
-        }else{
-            return "{\n" +
-                    "    \"data\": {\n" +
-                    "        \"app\": \"GCMC\",\n" +
-                    "        \"title\": \"全球现金管理\",\n" +
-                    "        \"bio\": \"为我行现金管理企业客户提供流动性管理、收付款、信息服务、投融资等一系列现金管理产品组合服务。\"\n" +
-                    "    },\n" +
-                    "    \"charts\": {\n" +
-                    "        \"line\":[10, 1, 2, 8, 0, 0, 1, 3, 0, 7, 1, 4],\n" +
-                    "        \"pie\": [\n" +
-                    "            {\"name\": \"批量\", \"value\": 5},\n" +
-                    "            {\"name\": \"联机\", \"value\": 9},\n" +
-                    "            {\"name\": \"业务\", \"value\": 13},\n" +
-                    "            {\"name\": \"性能\", \"value\": 11},\n" +
-                    "            {\"name\": \"资源\", \"value\": 16}\n" +
-                    "        ]\n" +
-                    "    }\n" +
-                    "}";
-        }
-
-    }
-
-    /*
-    用户登录时，获取该用户的唯一标识openid。
-     */
-    @RequestMapping("/loginstate")
-    public String getLoginState(HttpServletRequest request){
-        String appid = Params.getParamById("appid");//小程序appid
-        String secret = Params.getParamById("secret");//小程序secret
-        String js_code = request.getParameter("code");//wx.login() 获取的code
-        String url = "https://api.weixin.qq.com/sns/jscode2session?appid="
-                +appid+"&secret="+secret+"&js_code="+js_code+"&grant_type=authorization_code";
-        String jsonStr = HttpTools.httpRequest(url,"POST",null);
-
-        String openid = "";
-        String session_key = "";
+    public String getAppInfo(@PathVariable String appid){
+        String appinfo = "{}";
         try {
-            JSONObject jsonObject = (JSONObject) JSONValue.parseStrict(jsonStr);
-            if(jsonObject != null){
-                openid = jsonObject.get("openid") == null? "":jsonObject.get("openid").toString();
-                session_key = jsonObject.get("session_key") == null? "":jsonObject.get("session_key").toString();
+            ResultSet rs = DbTools.doQuery("select * from insight_app where appid = '"+appid+"'");
+            if (rs.next()) {
+                String appname = rs.getString("appname");
+                String appdesc = rs.getString("appdesc");
+                appinfo = "{\n" +
+                        "    \"data\":{\n" +
+                        "        \"app\":\""+appid+"\",\n" +
+                        "        \"title\":\""+appname+"\",\n" +
+                        "        \"bio\":\""+appdesc+"\"\n" +
+                        "    },";
+                appinfo += "\"charts\": {\n" +
+                        "        \"line\":[10, 1, 2, 8, 0, 0, 1, 3, 0, 7, 1, 4],\n" +
+                        "        \"pie\": [\n" +
+                        "            {\"name\": \"批量\", \"value\": 5},\n" +
+                        "            {\"name\": \"联机\", \"value\": 9},\n" +
+                        "            {\"name\": \"业务\", \"value\": 13},\n" +
+                        "            {\"name\": \"性能\", \"value\": 11},\n" +
+                        "            {\"name\": \"资源\", \"value\": 16}\n" +
+                        "        ]\n" +
+                        "    }\n" +
+                        "}";
             }
-        } catch (ParseException e) {
-            //e.printStackTrace();
-            openid = "";
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        if(!"".equals(openid)){
-            if(!DbTools.checkIfExist("select count(1) from insight_user where openid='"+openid+"'")){
-                DbTools.doUpdate("insert into insight_user(openid,last_time) values('"+openid+"',date_format(now(),'%Y-%m-%d %H:%i:%S'))");
-            }
-        }
-        return "{\n" +
-                "  \t\"openid\": \""+openid+"\",\n" +
-                "  \t\"token\": \""+session_key+"\"\n" +
-                "}\n";
+        return appinfo;
     }
 
     /*
-    获取某指标的图表数据。
+    原子图表
      */
     @RequestMapping("/diagrams/{chartid}")
     public String getDiagram(@PathVariable String chartid){

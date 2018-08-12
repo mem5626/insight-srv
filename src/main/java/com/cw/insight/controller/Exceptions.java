@@ -12,9 +12,8 @@ import java.sql.ResultSet;
 
 @RestController
 public class Exceptions {
-
     /*
-    获取未处理的异常信息列表。
+    未处理异常列表
      */
     @RequestMapping("/unhandledexceptions")
     public String getUnhandledExceptions() {
@@ -38,16 +37,17 @@ public class Exceptions {
     }
 
     /*
-    获取已处理的异常信息列表。
+    历史异常列表
      */
     @RequestMapping("/handledexceptions")
     public String getHandledExceptions(HttpServletRequest request) {
         String page = request.getParameter("page");
-        int offset = Integer.parseInt(page) * 10;
+        int pageSize = 10;//每次返回10条
+        int offset = Integer.parseInt(page) * pageSize;
         String exceptions = "{\"page\":\"" + page + "\",";
         String dateTemp = "";
         try {
-            ResultSet rs = DbTools.doQuery("select * from insight_app_exception where is_handled='1' order by des_time desc limit " + offset + ",10");
+            ResultSet rs = DbTools.doQuery("select * from insight_app_exception where is_handled='1' order by des_time desc limit " + offset + ","+pageSize+"");
             exceptions += "\"records\":[";
             while (rs.next()) {
                 String datePart = rs.getString("des_time").substring(0, 10);
@@ -85,7 +85,7 @@ public class Exceptions {
     }
 
     /*
-    获取未处理的异常详细。
+    异常详细信息
      */
     @RequestMapping("/exceptions/{exid}")
     public String getExceptionById(@PathVariable String exid) {
@@ -110,6 +110,9 @@ public class Exceptions {
         return exception;
     }
 
+    /*
+    推送异常
+     */
     @RequestMapping("/msg/warning")
     public boolean doWarning(HttpServletRequest request) {
         String appid = request.getParameter("appid");
@@ -130,9 +133,11 @@ public class Exceptions {
         } catch (Exception e) {
             return false;
         }
-        //http://localhost:8080/msg/warning?appid=TEST&title=titletitle&content=contentcontent&time=2018-12-01 11:11:11&customid=customidcustomid
     }
 
+    /*
+    结束异常
+     */
     @RequestMapping("/msg/finished")
     public boolean doFinished(HttpServletRequest request) {
         String appid = request.getParameter("appid");
@@ -146,6 +151,5 @@ public class Exceptions {
         } catch (Exception e) {
             return false;
         }
-        //http://localhost:8080/msg/finished?appid=TEST&content=ccccccc&time=2018-11-11 11:11:11&customid=customidcustomid
     }
 }

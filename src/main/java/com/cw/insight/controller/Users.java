@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 @RestController
 public class Users {
     /*
-    获取用户的收藏信息列表。
+    收藏列表
      */
     @RequestMapping(path = "/users/{openid}/diagrams")
     public String getUserDiagrams(@PathVariable String openid) {
@@ -27,7 +27,7 @@ public class Users {
                 diagrams += "{\"name\":\"" + title + "\",\"id\":\"" + chartid + "\"},";
             }
             if (",".equals(diagrams.substring(diagrams.length() - 1))) {
-                diagrams = diagrams.substring(0,diagrams.length()-1);
+                diagrams = diagrams.substring(0, diagrams.length() - 1);
             }
             diagrams += "]}";
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class Users {
     }
 
     /*
-    修改指定用户的图表收藏状态。
+    更新收藏状态
      */
     @RequestMapping("/users/{openid}/diagrams/{chartid}")
     public String toggleUserDiagram(@PathVariable String openid, @PathVariable String chartid, HttpServletRequest request) {
@@ -46,7 +46,7 @@ public class Users {
         try {
             ResultSet rs = DbTools.doQuery("select * from insight_collection where openid='" + openid + "' and chartid='" + chartid + "'");
             if (rs != null && rs.next()) {
-                if("true".equals(operflag)){//收藏操作，但已经收藏过了
+                if ("true".equals(operflag)) {//收藏操作，但已经收藏过了
                     return "{\n" +
                             "    \"ifCollected\":true\n" +
                             "}";
@@ -54,7 +54,7 @@ public class Users {
                 //删除
                 DbTools.doUpdate("delete from insight_collection where openid='" + openid + "' and chartid='" + chartid + "'");
             } else {
-                if("false".equals(operflag)){//取消收藏操作，但原先就没有收藏过。
+                if ("false".equals(operflag)) {//取消收藏操作，但原先就没有收藏过。
                     return "{\n" +
                             "    \"ifCollected\":false\n" +
                             "}";
@@ -72,7 +72,7 @@ public class Users {
     }
 
     /*
-    向后端发送formid。
+    收集formid
      */
     @RequestMapping(path = "/users/{openid}")
     public String patchUserFormId(@PathVariable String openid, HttpServletRequest request) {

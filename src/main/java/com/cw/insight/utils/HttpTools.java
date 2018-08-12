@@ -16,7 +16,7 @@ import java.sql.ResultSet;
 public class HttpTools {
 
     //处理http请求  requestUrl为请求地址  requestMethod请求方式，值为"GET"或"POST"
-    public static String httpRequest(String requestUrl, String requestMethod, String outputStr) {
+    public static String httpRequest(String requestUrl, String requestMethod, String params) {
         StringBuffer buffer = null;
         try {
             URL url = new URL(requestUrl);
@@ -26,9 +26,9 @@ public class HttpTools {
             conn.setRequestMethod(requestMethod);
             conn.connect();
             //往服务器端写内容 也就是发起http请求需要带的参数
-            if (null != outputStr) {
+            if (null != params) {
                 OutputStream os = conn.getOutputStream();
-                os.write(outputStr.getBytes("utf-8"));
+                os.write(params.getBytes("utf-8"));
                 os.close();
             }
 
@@ -47,41 +47,31 @@ public class HttpTools {
         return buffer.toString();
     }
 
-    public void cycleTemplate(String appid, String title, String time) {
-        try {
-            String wx_appid = Params.getParamById("appid");
-            String wx_secret = Params.getParamById("secret");
-            String template_id = Params.getParamById("template_id");
-            ResultSet rs = DbTools.doQuery("select distinct(t.openid) dis_openid from insight_medium t " +
-                    "where ((UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(t.new_time))/(60*60*24)) < 6 and t.is_used = '0'");
-            java.lang.System.out.println("rs=" + rs);
-            while (rs.next()) {
-                ResultSet medium = DbTools.doQuery("select * from ( " +
-                        "select * from insight_medium t where ((UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(t.new_time))/(60*60*24)) < 6 and t.is_used = '0' " +
-                        ") m where m.openid = '"+rs.getString("dis_openid")+"' order by m.openid,m.new_time;");
-                if (medium.next()) {
-                    String openid = medium.getString("openid");
-                    String formid = medium.getString("formid");
-                    String new_time = medium.getString("new_time");
-                    java.lang.System.out.println("openid=" + openid);
-                    java.lang.System.out.println("formid=" + formid);
-                    java.lang.System.out.println("new_time=" + new_time);
-                    DbTools.doUpdate("update insight_medium set is_used = '1' where openid='" + openid + "' and formid='" + formid + "' and new_time='" + new_time + "'");
-                    this.sendTemplate(openid,formid,wx_appid,wx_secret,template_id,title,appid,time);
-                }
+    public void cycleTemplate(String appid, String title, String time) throws Exception {
+        String wx_appid = Params.getParamById("appid");
+        String wx_secret = Params.getParamById("secret");
+        String template_id = Params.getParamById("template_id");
+        ResultSet rs = DbTools.doQuery("select distinct(t.openid) dis_openid from insight_medium t " +
+                "where ((UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(t.new_time))/(60*60*24)) < 6 and t.is_used = '0'");
+        java.lang.System.out.println("rs=" + rs);
+        while (rs.next()) {
+            ResultSet medium = DbTools.doQuery("select * from ( " +
+                    "select * from insight_medium t where ((UNIX_TIMESTAMP(now()) - UNIX_TIMESTAMP(t.new_time))/(60*60*24)) < 6 and t.is_used = '0' " +
+                    ") m where m.openid = '" + rs.getString("dis_openid") + "' order by m.openid,m.new_time;");
+            if (medium.next()) {
+                String openid = medium.getString("openid");
+                String formid = medium.getString("formid");
+                String new_time = medium.getString("new_time");
+                java.lang.System.out.println("openid=" + openid);
+                java.lang.System.out.println("formid=" + formid);
+                java.lang.System.out.println("new_time=" + new_time);
+                DbTools.doUpdate("update insight_medium set is_used = '1' where openid='" + openid + "' and formid='" + formid + "' and new_time='" + new_time + "'");
+                this.sendTemplate(openid, formid, wx_appid, wx_secret, template_id, title, appid, time);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
     public void sendTemplate(String openid, String formid, String appid, String secret, String template_id, String title, String appName, String time) {
-        //String appid = Params.getParamById("appid");
-        //String secret = Params.getParamById("secret");
-        //String template_id = Params.getParamById("template_id");
-        //String openid = "oZwF75Z-BtareG5p1jDzzLenCV5g";
-        //String formid = "1533175450568";
-
         String jsonStr = "";
         try {
             String access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + appid + "&secret=" + secret + "";
