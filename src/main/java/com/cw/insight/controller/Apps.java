@@ -405,17 +405,19 @@ public class Apps {
                         "        \"title\":\"" + appname + "\",\n" +
                         "        \"bio\":\"" + appdesc + "\"\n" +
                         "    },";
-                appinfo += "\"charts\": {\n" +
-                        "        \"line\":[10, 1, 2, 8, 0, 0, 1, 3, 0, 7, 1, 4],\n" +
-                        "        \"pie\": [\n" +
-                        "            {\"name\": \"批量\", \"value\": 5},\n" +
-                        "            {\"name\": \"联机\", \"value\": 9},\n" +
-                        "            {\"name\": \"业务\", \"value\": 13},\n" +
-                        "            {\"name\": \"性能\", \"value\": 11},\n" +
-                        "            {\"name\": \"资源\", \"value\": 16}\n" +
-                        "        ]\n" +
-                        "    }\n" +
-                        "}";
+                appinfo += Params.getParamById("appview");
+                appinfo += "}";
+//                appinfo += "\"charts\": {\n" +
+//                        "        \"line\":[10, 1, 2, 8, 0, 0, 1, 3, 0, 7, 1, 4],\n" +
+//                        "        \"pie\": [\n" +
+//                        "            {\"name\": \"批量\", \"value\": 5},\n" +
+//                        "            {\"name\": \"联机\", \"value\": 9},\n" +
+//                        "            {\"name\": \"业务\", \"value\": 13},\n" +
+//                        "            {\"name\": \"性能\", \"value\": 11},\n" +
+//                        "            {\"name\": \"资源\", \"value\": 16}\n" +
+//                        "        ]\n" +
+//                        "    }\n" +
+//                        "}";
             }
         } catch (Exception e) {
             e.printStackTrace();
