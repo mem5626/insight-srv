@@ -86,7 +86,7 @@ public class Apps {
                                     "                    \"ifCollected\":" + ifCollected + "\n" +
                                     "                },";
                         }
-                        nameTemp = kpiname;
+                        //nameTemp = kpiname;
                     } else {
 
                         if (",".equals(kpiData.substring(kpiData.length() - 1))) {
@@ -107,7 +107,7 @@ public class Apps {
                                     "                    \"ifCollected\":" + ifCollected + "\n" +
                                     "                },";
                         }
-                        nameTemp = "";
+                        nameTemp = kpiname;
                     }
 
                 } else {
