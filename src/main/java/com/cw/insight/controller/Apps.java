@@ -56,7 +56,7 @@ public class Apps {
                     " (CASE WHEN k.kpitype = '1' THEN 'xingneng' WHEN k.kpitype = '2' THEN 'ziyuan' WHEN k.kpitype = '3' THEN 'piliang' WHEN k.kpitype = '4' THEN 'lianji' WHEN k.kpitype = '5' THEN 'yewu' ELSE k.kpitype END) kpitype," +
                     " k.kpiid,k.kpiname, " +
                     " t.title,t.chartid, " +
-                    "IFNULL((SELECT 'true' FROM insight_collection c WHERE c.openid='oZwF75UQQtpC9IgufQ6UhYcApWe0' AND c.chartid=t.chartid LIMIT 1),'false') ifCollected " +
+                    "IFNULL((SELECT 'true' FROM insight_collection c WHERE c.openid='"+openid+"' AND c.chartid=t.chartid LIMIT 1),'false') ifCollected " +
                     "FROM insight_kpi k " +
                     "left join test_chart t on k.kpiid=t.kpiid " +
                     "ORDER BY k.kpitype,k.kpiid";
