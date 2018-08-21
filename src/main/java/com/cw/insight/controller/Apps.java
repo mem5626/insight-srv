@@ -405,19 +405,31 @@ public class Apps {
                         "        \"title\":\"" + appname + "\",\n" +
                         "        \"bio\":\"" + appdesc + "\"\n" +
                         "    },";
-                appinfo += Params.getParamById("appview");
-                appinfo += "}";
-//                appinfo += "\"charts\": {\n" +
-//                        "        \"line\":[10, 1, 2, 8, 0, 0, 1, 3, 0, 7, 1, 4],\n" +
-//                        "        \"pie\": [\n" +
-//                        "            {\"name\": \"批量\", \"value\": 5},\n" +
-//                        "            {\"name\": \"联机\", \"value\": 9},\n" +
-//                        "            {\"name\": \"业务\", \"value\": 13},\n" +
-//                        "            {\"name\": \"性能\", \"value\": 11},\n" +
-//                        "            {\"name\": \"资源\", \"value\": 16}\n" +
-//                        "        ]\n" +
-//                        "    }\n" +
-//                        "}";
+                String kpisql = "select " +
+                        "(select count(*) from test_chart where kpiid like 'yw%') as yewu," +
+                        "(select count(*) from test_chart where kpiid like 'lj%') as lianji," +
+                        "(select count(*) from test_chart where kpiid like 'pl%') as piliang," +
+                        "(select count(*) from test_chart where kpiid like 'xn%') as xingneng," +
+                        "(select count(*) from test_chart where kpiid like 'zy%') as ziyuan";
+                ResultSet kpirs = DbTools.doQuery(kpisql);
+
+                if(kpirs.next()){
+                    appinfo += "\"charts\": {\n" +
+                            "        \"line\":[10, 1, 2, 8, 0, 0, 1, 3, 0, 7, 1, 4],\n" +
+                            "        \"pie\": [\n" +
+                            "            {\"name\": \"批量\", \"value\": "+kpirs.getString("piliang")+"},\n" +
+                            "            {\"name\": \"联机\", \"value\": "+kpirs.getString("lianji")+"},\n" +
+                            "            {\"name\": \"业务\", \"value\": "+kpirs.getString("yewu")+"},\n" +
+                            "            {\"name\": \"性能\", \"value\": "+kpirs.getString("xingneng")+"},\n" +
+                            "            {\"name\": \"资源\", \"value\": "+kpirs.getString("ziyuan")+"}\n" +
+                            "        ]\n" +
+                            "    }\n" +
+                            "}";
+                }else{
+                    appinfo += Params.getParamById("appview");
+                    appinfo += "}";
+                }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
